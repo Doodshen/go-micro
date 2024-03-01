@@ -30,7 +30,10 @@ func main() {
 	}
 
 	paramBytes, _ := json.Marshal(param)
-	resp, _ := http.Post(url, "application/json", bytes.NewBuffer(paramBytes))
+	resp, err := http.Post(url, "application/json", bytes.NewBuffer(paramBytes))
+	if err != nil {
+		return
+	}
 	defer resp.Body.Close()
 
 	respBytes, _ := ioutil.ReadAll(resp.Body)
