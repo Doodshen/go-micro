@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+
+package book;  //声明的protobuf的包
+
+option go_package = "demo/proto/book";  //生成的go代码的导入包 
+
+message Price{
+    int64 market_price = 1;
+    int64 sale_price =2 ;
+}
+
+
+
+//protoc --proto_path=pb --go_out=pb --go_opt=paths=source_relative book/price.proto

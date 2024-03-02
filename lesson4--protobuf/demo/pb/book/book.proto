@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package book;   
+
+option go_package = "demo/proto/book";  
+
+//导入相同目录下的proto 
+import "book/price.proto";   //从编译时proto_path=xx中的xx那个路径开始往下写 
+
+
+//导入其他目录下的proto
+import "author/author.proto";   
+
+//导入google目录 
+import "google/protobuf/timestamp.proto";
+
+
+
+message Book{
+    string title = 1;
+    //引用price.proto
+    Price price = 2 ;
+
+    //导入其他目录下的proto文件 别的目录下的需要指定名称 包名
+    author.Info author = 3;   
+
+    google.protobuf.Timestamp data = 4;
+
+}
+
+//protoc --proto_path=pb --go_out=pb --go_opt=paths=source_relative book/price.proto book/book.proto
+//proto_path :指定proto文件从那个路径开始找
+//go_out=:指定生成的go语言代码到那个路径中去 
+//--go_opt=paths=source_relative指定生成的go代码放到与proto文件相同的目录 
+
+//生成grpc的代码。基于该proto中是否有service
+service BookService {
+    rpc Create(Book)returns(Book);
+}
+
+//
